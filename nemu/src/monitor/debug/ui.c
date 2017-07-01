@@ -63,7 +63,7 @@ static struct {
 
 static int cmd_help(char *args) {
 	/* extract the first argument */
-	char *arg = strtok(args, " ");
+	char *arg = strtok(NULL, " ");
 	int i;
 
 	if(arg == NULL) {
@@ -125,24 +125,19 @@ static int cmd_info(char *args){
 }
 
 static int cmd_x(char *args){
-	printf("args = %s\n", args);
-
-	char *arg = strtok(NULL, " ");
-	printf("args = %s\n", args);
-	
 	int n, expr;
-	if(arg == NULL){
+	if(args == NULL){
 		printf("lack parameters !!!\n");
 		return 0;
 	}
-	else if(sscanf(arg, "%d %d", &n, &expr) == 2){
+	else if(sscanf(args, "%d %d", &n, &expr) == 2){
 		while(n--){
 			swaddr_read(expr, 4);
 			expr += 4;
 		}
 	}
 	else
-		printf("UnKnown command '%s'\n", arg);
+		printf("UnKnown command '%s'\n", args);
 
 	return 0;
 }
