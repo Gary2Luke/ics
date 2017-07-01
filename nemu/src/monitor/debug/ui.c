@@ -41,6 +41,9 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 
 static int cmd_info(char *args);
+
+static int cmd_x(char *args);
+
 static struct {
 	char *name;
 	char *description;
@@ -51,7 +54,7 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 	{"si", "si N : Let the program step by step after the implementation of N instructions suspended, When N is not given, the default is 1", cmd_si},
 	{"info", "info r : Prints the register status, info w : Prints the monitoring point information", cmd_info},
-
+	{"x", "X N EXPR: Calculate the value of the expression EXPR, the result as the starting memory address, in the form of hexadecimal output of the four N bytes", cmd_x},
 	/* TODO: Add more commands */
 
 };
@@ -105,9 +108,6 @@ static int cmd_info(char *args){
 		printf("lack parameters !!!\n");
 		return 0;
 	}
-	
-	
-
 	if(strcmp(arg, "w") == 0){
 		return 0;
 	}
@@ -117,6 +117,25 @@ static int cmd_info(char *args){
 			printf("%s\t 0x%x\t %d\t\n",regsl[i], reg_l(i), reg_l(i));
 		}
 		printf("eip\t 0x%x\t %d\t\n", cpu.eip, cpu.eip);
+	}
+	else
+		printf("UnKnown command '%s'\n", arg);
+
+	return 0;
+}
+
+static int cmd_x(char *args){
+	char *arg = strtok(NULL, " ");
+	int n, expr;
+	if(arg == NULL){
+		printf("lack parameters !!!\n");
+		return 0;
+	}
+	else if(sscanf(arg, "%d %x", &n, &expr) == 2){
+		while(n--){
+			swaddr_read(expr, 4);
+			expr += 4;
+		}
 	}
 	else
 		printf("UnKnown command '%s'\n", arg);
