@@ -125,9 +125,11 @@ static int cmd_info(char *args){
 }
 
 static int cmd_x(char *args){
+	printf("args = %s\n", args);
+
 	char *arg = strtok(NULL, " ");
 	printf("args = %s\n", args);
-	printf("arg = %s\n", arg);
+	
 	int n, expr;
 	if(arg == NULL){
 		printf("lack parameters !!!\n");
