@@ -40,6 +40,7 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args);
 
+static int cmd_info(char *args);
 static struct {
 	char *name;
 	char *description;
@@ -49,6 +50,7 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
 	{"si", "si N : Let the program step by step after the implementation of N instructions suspended, When N is not given, the default is 1", cmd_si},
+	{"info", "info r : Prints the register status, info w : Prints the monitoring point information", cmd_info},
 
 	/* TODO: Add more commands */
 
@@ -94,6 +96,24 @@ static int cmd_si(char *args){
 		else
 			printf("UnKnown command '%s'\n", arg);
 	}
+	return 0;
+}
+
+static int cmd_info(char *args){
+	char *arg = strtok(NULL, " ");
+	if(*arg == 'w'){
+		return 0;
+	}
+	else if(*arg == 'r'){
+		int i = 0;
+		for(i = 0; i < 8; i++){
+			printf("%s\t 0x%x\t %d\t\n",regsl[i], reg_l(i), reg_l(i));
+		}
+		printf("eip\t 0x%x\t %d\t\n", cpu.eip, cpu.eip);
+	}
+	else
+		printf("UnKnown command '%s'\n", arg);
+
 	return 0;
 }
 
