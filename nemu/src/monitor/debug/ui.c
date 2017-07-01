@@ -105,10 +105,13 @@ static int cmd_info(char *args){
 		printf("lack parameters !!!\n");
 		return 0;
 	}
-	if(*arg == 'w'){
+	
+	
+
+	if(strcmp(arg, "w") == 0){
 		return 0;
 	}
-	else if(*arg == 'r'){
+	else if(strcmp(arg, "r") == 0){
 		int i = 0;
 		for(i = 0; i < 8; i++){
 			printf("%s\t 0x%x\t %d\t\n",regsl[i], reg_l(i), reg_l(i));
