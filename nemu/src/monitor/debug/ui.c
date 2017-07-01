@@ -101,6 +101,9 @@ static int cmd_si(char *args){
 
 static int cmd_info(char *args){
 	char *arg = strtok(NULL, " ");
+	if(arg == NULL)
+		cmd_help("info");
+
 	if(*arg == 'w'){
 		return 0;
 	}
