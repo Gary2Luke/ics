@@ -133,7 +133,7 @@ static int cmd_x(char *args){
 	else if(sscanf(args, "%d %x", &n, &expr) == 2){
 		while(n--){
 			//printf("n = %d\n", n);
-			printf("0x%x\n",swaddr_read(expr, 4));
+			printf("0x%8x\n",swaddr_read(expr, 4));
 			expr += 4;
 		}
 	}
