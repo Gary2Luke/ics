@@ -135,7 +135,7 @@ static int cmd_x(char *args){
 			int i = 0;
 			printf("0x");
 			for(i = 0; i < 4; i++){
-				printf("%02x\n",swaddr_read(expr, 1));
+				printf("%02x",swaddr_read(expr, 1));
 				expr += 1;
 			}
 			printf("\n");
