@@ -132,7 +132,7 @@ static int cmd_x(char *args){
 	}
 	else if(sscanf(args, "%d %d", &n, &expr) == 2){
 		while(n--){
-			printf("n = %d\n", n);
+			//printf("n = %d\n", n);
 			printf("%d\t",swaddr_read(expr, 4));
 			expr += 4;
 		}
