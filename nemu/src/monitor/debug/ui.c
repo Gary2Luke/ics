@@ -44,6 +44,8 @@ static int cmd_info(char *args);
 
 static int cmd_x(char *args);
 
+static int cmd_p(char *args);
+
 static struct {
 	char *name;
 	char *description;
@@ -55,6 +57,7 @@ static struct {
 	{"si", "si N : Let the program step by step after the implementation of N instructions suspended, When N is not given, the default is 1", cmd_si},
 	{"info", "info r : Prints the register status, info w : Prints the monitoring point information", cmd_info},
 	{"x", "X N EXPR: Calculate the value of the expression EXPR, the result as the starting memory address, in the form of hexadecimal output of the four N bytes", cmd_x},
+	{"p", "p EXPR : calculate the value of the EXPR", cmd_p},
 	/* TODO: Add more commands */
 
 };
@@ -125,18 +128,29 @@ static int cmd_info(char *args){
 }
 
 static int cmd_x(char *args){
-	int n, expr;
+	int n;	
+	char expression[32];
 	if(args == NULL){
 		printf("lack parameters !!!\n");
 		return 0;
-	}
-	else if(sscanf(args, "%d %x", &n, &expr) == 2){
+	}	
+	else if(sscanf(args, "%d %s", &n, expression) == 2){	//此处有问题，expression不能含有空格，否则会被
+		printf("args = %s\n", args);
+		
+		printf("n = %d, expression = %s\n", n, expression);
+		int res = 0;
+		bool flags = true;	
+		res = expr(expression, &flags);
+		if(flags == false){
+			printf("error in function expr !!\n");
+			return 0;
+		}	
 		while(n--){
 			int i = 0;
 			printf("0x");
-			for(i = 0; i < 4; i++){
-				printf("%02x",swaddr_read(expr, 1));
-				expr += 1;
+		for(i = 0; i < 4; i++){
+				printf("%02x",swaddr_read(res, 1));
+				res += 1;
 			}
 			printf("\n");
 		}
@@ -144,6 +158,23 @@ static int cmd_x(char *args){
 	else
 		printf("UnKnown command '%s'\n", args);
 
+	return 0;
+}
+static int cmd_p(char *args){
+	if(args == NULL){
+		printf("lack parameters !!\n");
+		return 0;
+	}
+	else{
+		bool flags = true;
+		int res = 0;
+		res = expr(args, &flags);
+		if(flags == false){
+			printf("error in function expr !!\n");
+		}
+		else
+			printf("result = %d\t0x%x\n", res, res);
+	}
 	return 0;
 }
 
