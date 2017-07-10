@@ -46,6 +46,10 @@ static int cmd_x(char *args);
 
 static int cmd_p(char *args);
 
+static int cmd_w(char *args);
+
+static int cmd_d(char *args);
+
 static struct {
 	char *name;
 	char *description;
@@ -58,6 +62,8 @@ static struct {
 	{"info", "info r : Prints the register status, info w : Prints the monitoring point information", cmd_info},
 	{"x", "X N EXPR: Calculate the value of the expression EXPR, the result as the starting memory address, in the form of hexadecimal output of the four N bytes", cmd_x},
 	{"p", "p EXPR : calculate the value of the EXPR", cmd_p},
+	{"w", "w EXPR : When the value of the expression EXPR changes, stop the program", cmd_w},
+	{"d", "d N : Delete the monitoring point with the serial number N", cmd_d},
 	/* TODO: Add more commands */
 
 };
@@ -88,23 +94,23 @@ static int cmd_help(char *args) {
 }
 
 static int cmd_si(char *args){
-	char *arg = strtok(NULL, " ");
 	int n;
-	if(arg == NULL){
+	if(args == NULL){
 		cpu_exec(1);
 		return 0;
 	}
 	else{
-		if(sscanf(arg, "%d", &n) == 1){
+		if(sscanf(args, "%d", &n) == 1){
 			cpu_exec(n);
 			return 0;
 		}
 		else
-			printf("UnKnown command '%s'\n", arg);
+			printf("UnKnown command '%s'\n", args);
 	}
 	return 0;
 }
 
+//void print_wp();
 static int cmd_info(char *args){
 	char *arg = strtok(NULL, " ");
 	if(arg == NULL){
@@ -112,6 +118,7 @@ static int cmd_info(char *args){
 		return 0;
 	}
 	if(strcmp(arg, "w") == 0){
+		print_wp();	
 		return 0;
 	}
 	else if(strcmp(arg, "r") == 0){
@@ -160,6 +167,7 @@ static int cmd_x(char *args){
 
 	return 0;
 }
+
 static int cmd_p(char *args){
 	if(args == NULL){
 		printf("lack parameters !!\n");
@@ -177,6 +185,34 @@ static int cmd_p(char *args){
 	}
 	return 0;
 }
+
+//void new_wp(char *args);
+static int cmd_w(char *args){
+	if(args == NULL){
+		printf("lack parameters !!\n");
+		return 0;
+	}
+	else{
+		new_wp(args);	
+	}
+	return 0;
+}
+
+//void free_wp(int NO);
+static int cmd_d(char *args){
+	if(args == NULL){
+		printf("lack parameters !!\n");
+		return 0;
+	}
+	int n;
+	if(sscanf(args, "%d", &n) == 1){
+		free_wp(n);				
+	}
+	else
+		printf("Unknown parameters '%s'\n", args);
+	return 0;
+}
+	
 
 void ui_mainloop() {
 	while(1) {

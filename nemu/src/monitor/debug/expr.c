@@ -112,7 +112,7 @@ static bool make_token(char *e) {
 					tokens[nr_token].priority = rules[i].priority;
 					strncpy(tokens[nr_token].str, substr_start, substr_len);
 					tokens[nr_token].str[substr_len] = '\0';
-					printf("%s, %d\n", tokens[nr_token].str, tokens[nr_token].priority);
+					//printf("%s, %d\n", tokens[nr_token].str, tokens[nr_token].priority);
 					
 				}
 				switch(rules[i].token_type) {
@@ -325,7 +325,7 @@ uint32_t expr(char *e, bool *success) {
 		printf("expression is too long\n");
 		return 0;
 	}
-	printf("args = %s\n", e);
+//	printf("args = %s\n", e);
 	if(!make_token(e)) {
 		*success = false;
 		return 0;

@@ -12,6 +12,7 @@
 int nemu_state = STOP;
 
 int exec(swaddr_t);
+extern void check_wp(int *nemu_state);
 
 char assembly[80];
 char asm_buf[128];
@@ -70,9 +71,10 @@ void cpu_exec(volatile uint32_t n) {
 		if(n_temp < MAX_INSTR_TO_PRINT) {
 			printf("%s\n", asm_buf);
 		}
-#endif
+	#endif
 
 		/* TODO: check watchpoints here. */
+		check_wp(&nemu_state);
 
 
 		if(nemu_state != RUNNING) { return; }
