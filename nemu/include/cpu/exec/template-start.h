@@ -33,3 +33,11 @@
 #define OPERAND_W(op, src) concat(write_operand_, SUFFIX) (op, src)
 
 #define MSB(n) ((DATA_TYPE)(n) >> ((DATA_BYTE << 3) - 1))
+
+#define update_EFLAGS(result) \
+	cpu.PF = 1; \
+	int i; \
+	for(i = 0; i < 8; i++) \
+		cpu.PF ^= (result >> i); \
+	cpu.ZF = !result; \
+	cpu.SF = MSB(result);

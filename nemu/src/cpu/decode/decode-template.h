@@ -32,7 +32,10 @@ make_helper(concat(decode_si_, SUFFIX)) {
 	 *
 	op_src->simm = ???
 	 */
-	panic("please implement me");
+	//panic("please implement me");
+	op_src->simm = instr_fetch(eip, DATA_BYTE);
+	op_src->simm <<= (32 - DATA_BYTE * 8);			//把符号位补成0或1即可
+	op_src->simm >>= (32 - DATA_BYTE * 8);
 
 	op_src->val = op_src->simm;
 
