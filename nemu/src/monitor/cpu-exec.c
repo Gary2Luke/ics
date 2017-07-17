@@ -58,9 +58,12 @@ void cpu_exec(volatile uint32_t n) {
 		}
 #endif
 
-		/* Execute one instruction, including instruction fetch,
+	/* Execute one instruction, including instruction fetch,
 		 * instruction decode, and the actual execution. */
 		int instr_len = exec(cpu.eip);
+
+		/*将监视点的观察转移到了这里，符合习惯，不然监视点变化时显示的是上一条指令*/
+		//check_wp(&nemu_state);
 
 		cpu.eip += instr_len;
 

@@ -3,9 +3,15 @@
 #define instr pop
 
 static void do_execute() {
-	OPERAND_W(op_dest, op_src->val);
+	int len;
+	if(DATA_BYTE == 2)
+		len = 2;
+	else
+		len = 4;
+
+	OPERAND_W(op_src, MEM_R(cpu.esp));
 	
-	cpu.esp += DATA_BYTE;
+	cpu.esp += len;
 	print_asm_template1();
 }
 

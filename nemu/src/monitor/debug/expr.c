@@ -98,7 +98,7 @@ static bool make_token(char *e) {
 			if(regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
 				char *substr_start = e + position;
 				int substr_len = pmatch.rm_eo;
-				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+				//Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;
 				/* TODO: Now a new token is recognized with rules[i]. Add codes
 				 * to record the token in the array ``tokens''. For certain 
@@ -177,8 +177,9 @@ bool check_parentheses(int p, int q){	//检查是否被一对括号包围
 }
 
 int eval(int p, int q){
-	if(p > q)
-		panic("expression is not valid ?!\n");
+	if(p > q){
+		panic("expression is not valid ?!\n");	
+	}
 	else if(p == q){
 		if(tokens[p].type == NUM){
 			int num = 0;
@@ -225,6 +226,8 @@ int eval(int p, int q){
 				return cpu.edi;
 			else if(strcmp(tmp, "eip") == 0 || strcmp(tmp, "EIP") == 0)
 				return cpu.eip;
+			else if(strcmp(tmp, "eflags") == 0 || strcmp(tmp, "EFLAGS") == 0)
+				return cpu.eflags;			
 			else
 				panic("Unknown register name %s !!\n", tokens[p].str);
 			return 1;

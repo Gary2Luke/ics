@@ -142,9 +142,9 @@ static int cmd_x(char *args){
 		return 0;
 	}	
 	else if(sscanf(args, "%d %s", &n, expression) == 2){	//此处有问题，expression不能含有空格，否则会被
-		printf("args = %s\n", args);
+	//	printf("args = %s\n", args);
 		
-		printf("n = %d, expression = %s\n", n, expression);
+	//	printf("n = %d, expression = %s\n", n, expression);
 		int res = 0;
 		bool flags = true;	
 		res = expr(expression, &flags);
@@ -153,12 +153,12 @@ static int cmd_x(char *args){
 			return 0;
 		}	
 		while(n--){
-			int i = 0;
-			printf("0x");
-		for(i = 0; i < 4; i++){
-				printf("%02x",swaddr_read(res, 1));
-				res += 1;
-			}
+			printf("0x%x\t", res);
+			//int i = 0;
+			printf("0x");	
+			printf("%02x",swaddr_read(res, 4));
+			res += 4;
+			
 			printf("\n");
 		}
 	}

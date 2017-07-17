@@ -93,7 +93,8 @@ void check_wp(int *nemu_state){
 			if(current != p->lastVal){
 				*nemu_state = STOP;
 				printf("0x%x hit watchpoints %d\n", cpu.eip, p->NO);
-				printf("old_val = %d, new_val = %d\n", p->lastVal, current);
+				printf("old_val = %d, 0x%x\n", p->lastVal, p->lastVal);
+				printf("new_val = %d, 0x%x\n", current, current);
 				p->lastVal = current;
 			}
 			p = p->next;

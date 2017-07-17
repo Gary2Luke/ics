@@ -9,7 +9,7 @@ CFLAGS := -MMD -Wall -Werror -c
 LIB_COMMON_DIR := lib-common
 NEWLIBC_DIR := $(LIB_COMMON_DIR)/newlib
 NEWLIBC := $(NEWLIBC_DIR)/libc.a
-#FLOAT := obj/$(LIB_COMMON_DIR)/FLOAT.a
+FLOAT := obj/$(LIB_COMMON_DIR)/FLOAT.a
 
 include config/Makefile.build
 
@@ -51,7 +51,7 @@ clean: clean-cpp
 
 ##### some convinient rules #####
 
-USERPROG := obj/testcase/mov-c
+USERPROG := obj/testcase/quadratic-eq
 ENTRY := $(USERPROG)
 
 entry: $(ENTRY)
@@ -63,8 +63,7 @@ run: $(nemu_BIN) $(USERPROG) entry
 gdb: $(nemu_BIN) $(USERPROG) entry
 	gdb -s $(nemu_BIN) --args $(nemu_BIN) $(USERPROG)
 
-test: $(nemu_BIN) $(testcase_BIN) entry
-	$(call git_commit, "test")
+test: $(nemu_BIN) $(testcase_BIN) entry	
 	bash test.sh $(testcase_BIN)
 
 submit: clean
