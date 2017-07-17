@@ -10,7 +10,9 @@ static void do_execute() {
 	else
 		cpu.OF = 0;
 
-	cpu.CF = ((long long) op_dest->val + (long long) op_src->val) >> (8 * DATA_BYTE) & 1;
+	 long long resultLL = (long long)op_dest->val + (long long)op_src->val;
+	     if(resultLL >> (8 * DATA_BYTE)) cpu.CF = 1;
+		     else cpu.CF = 0;
 	cpu.AF = ((op_dest->val & 0x7) + (op_src->val & 0x7)) > 0x7 ? 0 : 1;
 	OPERAND_W(op_dest, res);
 	print_asm_template2();
