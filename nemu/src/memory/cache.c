@@ -17,8 +17,8 @@
 //#define BLOCK_NUM  (CACHE_SIZE / BLOCK_SIZE)
 #define GROUP_NUM (1 << INDEX_BITS)    //(cache_size / block_size) / associate 
 
-uint32_t dram_read(hwaddr_t, size_t);
-void dram_write(hwaddr_t, size_t, uint32_t);
+uint32_t cache2_read(hwaddr_t, size_t);
+void cache2_write(hwaddr_t, size_t, uint32_t);
 int64_t run_time;		//模拟cache运行时间
 
 typedef union {
@@ -101,7 +101,7 @@ uint32_t cache_read(hwaddr_t addr, size_t len) {
 	tmp_addr.offset = 0;
 	int j = 0;
 	for(j = 0; j < BLOCK_SIZE; j++)
-		cache_block[i][index].buf[j] = dram_read(tmp_addr.addr + j, 1);
+		cache_block[i][index].buf[j] = cache2_read(tmp_addr.addr + j, 1);
 
 	return cache_read(addr, len);
 	
@@ -143,7 +143,7 @@ void cache_write(hwaddr_t addr, size_t len, uint32_t data) {
 
 	/*写穿透，写不分配*/
 	run_time += 200;	
-	dram_write(addr, len, data);
+	cache2_write(addr, len, data);
 }
 
 void cache_debug(swaddr_t addr){

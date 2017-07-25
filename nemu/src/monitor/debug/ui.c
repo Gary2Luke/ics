@@ -9,7 +9,7 @@
 
 void cpu_exec(uint32_t);
 
-extern int64_t run_time; 
+extern int64_t run_time;
 /* We use the ``readline'' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
 	static char *line_read = NULL;
@@ -31,6 +31,7 @@ char* rl_gets() {
 static int cmd_c(char *args) {
 	cpu_exec(-1);
 	printf("run_time = %lld\n", run_time);
+	
 	return 0;
 }
 
