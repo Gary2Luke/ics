@@ -9,6 +9,7 @@
 
 void cpu_exec(uint32_t);
 
+extern int64_t run_time; 
 /* We use the ``readline'' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
 	static char *line_read = NULL;
@@ -29,6 +30,7 @@ char* rl_gets() {
 
 static int cmd_c(char *args) {
 	cpu_exec(-1);
+	printf("run_time = %lld\n", run_time);
 	return 0;
 }
 
@@ -50,6 +52,8 @@ static int cmd_w(char *args);
 
 static int cmd_d(char *args);
 
+static int cmd_cache(char *args);
+
 static struct {
 	char *name;
 	char *description;
@@ -64,6 +68,7 @@ static struct {
 	{"p", "p EXPR : calculate the value of the EXPR", cmd_p},
 	{"w", "w EXPR : When the value of the expression EXPR changes, stop the program", cmd_w},
 	{"d", "d N : Delete the monitoring point with the serial number N", cmd_d},
+	{"cache", "cache ADDR : Use the address ADDR to find the cache", cmd_cache},
 	/* TODO: Add more commands */
 
 };
@@ -97,6 +102,7 @@ static int cmd_si(char *args){
 	int n;
 	if(args == NULL){
 		cpu_exec(1);
+	//printf("run_time = %lld\n", run_time);
 		return 0;
 	}
 	else{
@@ -212,7 +218,25 @@ static int cmd_d(char *args){
 		printf("Unknown parameters '%s'\n", args);
 	return 0;
 }
-	
+
+void cache_debug();
+static int cmd_cache(char *args){
+	if(args == NULL){
+		printf("lack parameters !!\n");
+		return 0;
+	}
+	else{
+		bool flags = true;
+		int res = 0;
+		res = expr(args, &flags);
+		if(flags == false){
+			printf("error in function expr !!\n");
+		}
+		else
+			cache_debug(res);
+	}
+	return 0;
+}
 
 void ui_mainloop() {
 	while(1) {
