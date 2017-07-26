@@ -15,6 +15,9 @@
 #include <stdint.h>
 #include <assert.h>
 #include <string.h>
+#include "../../lib-common/x86-inc/cpu.h"
+#include "../../lib-common/x86-inc/mmu.h"
+
 
 typedef uint8_t bool;
 typedef uint32_t hwaddr_t;

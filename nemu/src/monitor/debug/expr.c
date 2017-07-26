@@ -261,7 +261,7 @@ int eval(int p, int q){
 		}
 		switch(tokens[op].type){
 			case DEREF :
-				return swaddr_read(val1, 4);
+				return swaddr_read(val1, 4, R_DS);
 			case MINUS :
 				return -val1;
 			case INVERT :

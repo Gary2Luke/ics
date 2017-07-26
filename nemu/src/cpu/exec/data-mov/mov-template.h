@@ -14,7 +14,7 @@ make_instr_helper(rm2r)
 
 make_helper(concat(mov_a2moffs_, SUFFIX)) {
 	swaddr_t addr = instr_fetch(eip + 1, 4);
-	MEM_W(addr, REG(R_EAX));
+	MEM_W(addr, REG(R_EAX), R_DS);
 
 	print_asm("mov" str(SUFFIX) " %%%s,0x%x", REG_NAME(R_EAX), addr);
 	return 5;
@@ -22,10 +22,38 @@ make_helper(concat(mov_a2moffs_, SUFFIX)) {
 
 make_helper(concat(mov_moffs2a_, SUFFIX)) {
 	swaddr_t addr = instr_fetch(eip + 1, 4);
-	REG(R_EAX) = MEM_R(addr);
-
+	REG(R_EAX) = MEM_R(addr, R_DS);
 	print_asm("mov" str(SUFFIX) " 0x%x,%%%s", addr, REG_NAME(R_EAX));
 	return 5;
+}
+
+make_helper(concat(mov_r2cr_, SUFFIX)) {
+	uint8_t r = instr_fetch(eip + 1, 1);
+	if(((r >> 3) & 0x7) == 0)
+		cpu.cr0.val = REG(r & 0x7);
+	else 
+		cpu.cr3.val = REG(r & 0x7);
+	print_asm("mov" str(SUFFIX) " %%%s,%%cr%d", REG_NAME(r & 0x7), (r >> 3) & 0x7);
+	return 2;
+}
+
+make_helper(concat(mov_cr2r_, SUFFIX)) {
+	uint8_t r = instr_fetch(eip + 1, 1);
+	if(((r >> 3) & 0x7) == 0)
+		REG(r & 0x7) = cpu.cr0.val;
+	else
+		REG(r & 0x7) = cpu.cr3.val;
+	print_asm("mov" str(SUFFIX) " %%cr%d,%%%s", (r >> 3) & 0x7, REG_NAME(r & 0x7));
+	return 2;
+}
+
+void load_sreg(uint32_t);
+make_helper(concat(mov_rm2s_, SUFFIX)) {
+	uint8_t r = instr_fetch(eip + 1, 1);
+	sreg((r >> 3) & 0x7) = (uint16_t)REG(r & 0x7);
+	load_sreg((r >> 3) & 0x7);
+	print_asm("mov" str(SUFFIX) " %%%s,%%%s", REG_NAME(r & 0x7), SREG_NAME((r >> 3) & 0x7));
+	return 2;
 }
 
 #include "cpu/exec/template-end.h"

@@ -30,7 +30,7 @@ char* rl_gets() {
 
 static int cmd_c(char *args) {
 	cpu_exec(-1);
-	printf("run_time = %lld\n", run_time);
+	//printf("run_time = %lld\n", run_time);
 	
 	return 0;
 }
@@ -134,6 +134,14 @@ static int cmd_info(char *args){
 			printf("%s\t 0x%x\t %d\t\n",regsl[i], reg_l(i), reg_l(i));
 		}
 		printf("eip\t 0x%x\t %d\t\n", cpu.eip, cpu.eip);
+
+		for(i = 0; i < 4; i++)
+			printf("SR_cache[%d].valid : %d\n", i, cpu.SR_cache[i].valid);
+		for(i = 0; i < 4; i++)
+			printf("SR[%d]: %d\n", i, cpu.SR[i].val);
+		printf("CR0 : 0x%x\n", cpu.cr0.val);
+		printf("CR3 : 0x%x\n", cpu.cr3.val);
+
 	}
 	else
 		printf("UnKnown command '%s'\n", arg);
@@ -163,7 +171,7 @@ static int cmd_x(char *args){
 			printf("0x%x\t", res);
 			//int i = 0;
 			printf("0x");	
-			printf("%02x",swaddr_read(res, 4));
+			printf("%02x",swaddr_read(res, 4, R_DS));
 			res += 4;
 			
 			printf("\n");

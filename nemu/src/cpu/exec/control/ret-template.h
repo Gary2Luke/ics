@@ -4,7 +4,7 @@
 
 static void do_execute() {
 	//int len = get_len();
-	cpu.eip = swaddr_read(cpu.esp, 4);
+	cpu.eip = swaddr_read(cpu.esp, 4, R_SS);
 	cpu.esp += 4 + op_src->val;
 	cpu.eip -= (1 + DATA_BYTE);
 	print_asm("ret $0x%x", op_src->val);

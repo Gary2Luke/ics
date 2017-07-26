@@ -3,8 +3,8 @@
 #define instr cmps
 
 make_helper(concat(cmps_, SUFFIX)) {
-	DATA_TYPE tmp1 = MEM_R(cpu.esi);
-	DATA_TYPE tmp2 = MEM_R(cpu.edi);
+	DATA_TYPE tmp1 = MEM_R(cpu.esi, R_DS);
+	DATA_TYPE tmp2 = MEM_R(cpu.edi, R_ES);
 	DATA_TYPE res = tmp1 - tmp2; 
 	update_EFLAGS(res);
 	if((tmp1 != tmp2) && MSB(res) == MSB(tmp2))

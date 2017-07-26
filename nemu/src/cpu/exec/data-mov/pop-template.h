@@ -9,7 +9,7 @@ static void do_execute() {
 	else
 		len = 4;
 
-	OPERAND_W(op_src, MEM_R(cpu.esp));
+	OPERAND_W(op_src, MEM_R(cpu.esp, R_SS));
 	
 	cpu.esp += len;
 	print_asm_template1();

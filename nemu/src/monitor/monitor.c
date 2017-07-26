@@ -16,6 +16,16 @@ void init_cache2();
 
 FILE *log_fp = NULL;
 
+static void init_seg(){
+	int i;
+	for(i = 0; i < 4; ++i)
+		cpu.SR_cache[i].valid = 0;
+	cpu.cs = 8;
+	cpu.cr0.val = 0;
+	cpu.SR_cache[R_CS].base = 0;
+	cpu.SR_cache[R_CS].limit = 0xffffffff;
+}
+
 static void init_log() {
 	log_fp = fopen("log.txt", "w");
 	Assert(log_fp, "Can not open 'log.txt'");
@@ -95,6 +105,8 @@ void restart() {
 	/*init cache*/
 	init_cache();
 	init_cache2();
+	
+	init_seg();
 
 	/* Initialize DRAM. */
 	init_ddr3();
