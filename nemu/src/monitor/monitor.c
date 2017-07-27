@@ -13,6 +13,7 @@ void init_ddr3();
 
 void init_cache();
 void init_cache2();
+void init_tlb();
 
 FILE *log_fp = NULL;
 
@@ -20,7 +21,7 @@ static void init_seg(){
 	int i;
 	for(i = 0; i < 4; ++i)
 		cpu.SR_cache[i].valid = 0;
-	cpu.cs = 8;
+	//cpu.cs = 8;
 	cpu.cr0.val = 0;
 	cpu.SR_cache[R_CS].base = 0;
 	cpu.SR_cache[R_CS].limit = 0xffffffff;
@@ -106,7 +107,11 @@ void restart() {
 	init_cache();
 	init_cache2();
 	
+	/*Init segment*/
 	init_seg();
+
+	/*Init tlb*/
+	init_tlb();
 
 	/* Initialize DRAM. */
 	init_ddr3();
