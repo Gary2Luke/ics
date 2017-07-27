@@ -7,10 +7,13 @@ void load_sreg(uint32_t sreg) {
 	uint32_t base, limit;
 	for(i = 0; i < 8; ++ i){
 		tmp[i] = lnaddr_read(cpu.gdtr.base + cpu.SR[sreg].index * 8 + i, 1);
+		//printf("%02x", tmp[i]);
 	}	
+	//printf("\n");
 	SegDesc *segdesc = (SegDesc*)tmp;
 	limit = (segdesc->limit_19_16 << 16) + segdesc->limit_15_0;
 	base = (segdesc->base_31_24 << 24) + (segdesc->base_23_16 << 16) + segdesc->base_15_0;
+	//printf("base_31_24 = 0x%x, base_23_16 = 0x%x, base_15_0 = 0x%x, base = 0x%x\n", (segdesc->base_31_24 << 24) ,(segdesc->base_23_16 << 16) , segdesc->base_15_0, base);
 	//Assert(segdesc->present == 1, "Segdesc is not valid! 0x%x", cpu.gdtr.base + cpu.SR[sreg].index * 8);
 	//Assert(cpu.SR[sreg].index * 8 < limit, "Segment overflow!");
 	cpu.SR_cache[sreg].valid = true;
@@ -25,5 +28,6 @@ lnaddr_t seg_translate(swaddr_t addr, uint8_t sreg) {
 	if(cpu.SR_cache[sreg].valid == 0) load_sreg(sreg);
 
 	base = cpu.SR_cache[sreg].base;
+	//printf("base = 0x%x\n", base);
 	return base + addr;
 }

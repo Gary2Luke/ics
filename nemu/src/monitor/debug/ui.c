@@ -174,7 +174,7 @@ static int cmd_x(char *args){
 			printf("0x%x\t", res);
 			//int i = 0;
 			printf("0x");	
-			printf("%02x",swaddr_read(res, 4, R_DS));
+			printf("%08x",swaddr_read(res, 4, R_DS));
 			res += 4;
 			
 			printf("\n");
