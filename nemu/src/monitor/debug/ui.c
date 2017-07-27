@@ -130,17 +130,20 @@ static int cmd_info(char *args){
 	}
 	else if(strcmp(arg, "r") == 0){
 		int i = 0;
+		/*
 		for(i = 0; i < 8; i++){
 			printf("%s\t 0x%x\t %d\t\n",regsl[i], reg_l(i), reg_l(i));
 		}
+		*/
 		printf("eip\t 0x%x\t %d\t\n", cpu.eip, cpu.eip);
-
+		
 		for(i = 0; i < 4; i++)
 			printf("SR_cache[%d].valid : %d\n", i, cpu.SR_cache[i].valid);
 		for(i = 0; i < 4; i++)
 			printf("SR[%d]: %d\n", i, cpu.SR[i].val);
 		printf("CR0 : 0x%x\n", cpu.cr0.val);
 		printf("CR3 : 0x%x\n", cpu.cr3.val);
+		printf("GDTR : 0x%x\n", cpu.gdtr.base);
 
 	}
 	else
