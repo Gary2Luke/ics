@@ -12,6 +12,17 @@ static void sys_brk(TrapFrame *tf) {
 	tf->eax = 0;
 }
 
+static void sys_write(TrapFrame *tf) {
+#ifdef HAS_DEVICE
+	int i;
+	for(i = 0; i < tf->edx; ++ i)
+		serial_printc(*(char *)(tf->ecx + i));
+#else				
+	asm volatile (".byte 0xd6" : : "a"(2), "c"(tf->ecx), "d"(tf->edx));
+#endif
+	tf->eax = tf->edx;		//返回成功写的字节数
+}
+
 void do_syscall(TrapFrame *tf) {
 	switch(tf->eax) {
 		/* The ``add_irq_handle'' system call is artificial. We use it to 
@@ -26,6 +37,8 @@ void do_syscall(TrapFrame *tf) {
 			break;
 
 		case SYS_brk: sys_brk(tf); break;
+		
+		case SYS_write : sys_write(tf); break;
 
 		/* TODO: Add more system calls. */
 

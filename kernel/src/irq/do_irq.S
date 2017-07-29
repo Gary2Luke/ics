@@ -32,10 +32,10 @@
 asm_do_irq:
 	pushal
 
-	pushl %esp		# ???
+	pushl %esp		# ?? 这里其实相当于把esp的值作为irq_handle()函数的参数(也就是把esp的值作为TrapFrame的起始地址)
 	call irq_handle
 	
-	addl $4, %esp
-	popal
-	addl $8, %esp
-	iret
+	addl $4, %esp	# 对35行 pushl %esp,跳过这一帧
+	popal			# pop通用寄存器
+	addl $8, %esp	# 跳过 int32_t irq, uint32_t error_code
+	iret			# 通过 iret 指令恢复用户进程的EIP, CS, EFLAGS. 

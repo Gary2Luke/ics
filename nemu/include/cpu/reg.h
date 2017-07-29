@@ -72,10 +72,18 @@ typedef struct {
 	CR0 cr0;
 	CR3 cr3;
 
+	/*Global Descriptor Table, 全局描述符表*/
 	struct GDTR{
 		uint32_t base;
 		uint16_t limit;
 	}gdtr;
+
+	/*Interrupt Descriptor Table, 中断描述符表*/
+	struct IDTR{
+		uint32_t base;
+		uint16_t limit;
+	}idtr;
+
 
 	/*用来缓存段描述符*/
 	struct {

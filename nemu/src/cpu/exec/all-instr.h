@@ -8,7 +8,8 @@
 #include "data-mov/movzx.h"
 #include "data-mov/cdq.h"
 #include "data-mov/cmovcc.h"
-
+#include "data-mov/pusha.h"
+#include "data-mov/popa.h"
 
 #include "arith/dec.h"
 #include "arith/inc.h"
@@ -51,3 +52,5 @@
 #include "control/leave.h"
 #include "control/jmp.h"
 #include "control/ret.h"
+#include "control/int.h"
+#include "control/iret.h"
