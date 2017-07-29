@@ -93,6 +93,7 @@ typedef struct {
 		uint32_t dpl : 2;
 	}SR_cache[4];
 
+	bool INTR;
 } CPU_state;
 
 extern CPU_state cpu;

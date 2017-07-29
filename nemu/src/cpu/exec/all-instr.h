@@ -10,6 +10,8 @@
 #include "data-mov/cmovcc.h"
 #include "data-mov/pusha.h"
 #include "data-mov/popa.h"
+#include "data-mov/in.h"
+#include "data-mov/out.h"
 
 #include "arith/dec.h"
 #include "arith/inc.h"
@@ -54,3 +56,4 @@
 #include "control/ret.h"
 #include "control/int.h"
 #include "control/iret.h"
+#include "control/hlt.h"
